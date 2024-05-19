@@ -7,18 +7,18 @@ using namespace std;
 
  int int_val1, int_val2;
 float float_val1, float_val2;
-long long int int_result, float_result;
+float int_result, float_result;
 
 
 void generateData();
-pair<long long int, long long int> addInt();
-pair<long long int, long long int> subInt();
-pair<long long int, long long int> mulInt();
-pair<long long int, long long int> divInt();
-pair<long long int, long long int> addFloat();
-pair<long long int, long long int> subFloat();
-pair<long long int, long long int> mulFloat();
-pair<long long int, long long int> divFloat();
+pair<float, float> addInt();
+pair<float, float> subInt();
+pair<float, float> mulInt();
+pair<float, float> divInt();
+pair<float, float> addFloat();
+pair<float, float> subFloat();
+pair<float, float> mulFloat();
+pair<float, float> divFloat();
 void test();
 
 int main() {
@@ -40,9 +40,9 @@ void generateData(){
 }
 
 void test(){
-    long long int total_intAdd_duration,total_intSub_duration,total_intMul_duration,total_intDiv_duration,total_intAdd_asm_duration,total_intSub_asm_duration,total_intMul_asm_duration,total_intDiv_asm_duration, total_floatAdd_duration, total_floatSub_duration, total_floatMul_duration, total_floatDiv_duration, total_floatAdd_asm_duration, total_floatSub_asm_duration, total_floatMul_asm_duration, total_floatDiv_asm_duration;
+    float total_intAdd_duration,total_intSub_duration,total_intMul_duration,total_intDiv_duration,total_intAdd_asm_duration,total_intSub_asm_duration,total_intMul_asm_duration,total_intDiv_asm_duration, total_floatAdd_duration, total_floatSub_duration, total_floatMul_duration, total_floatDiv_duration, total_floatAdd_asm_duration, total_floatSub_asm_duration, total_floatMul_asm_duration, total_floatDiv_asm_duration;
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1; i++) {
         auto durations_add = addInt();
         auto durations_sub = subInt();
         auto durations_mul = mulInt();
@@ -99,7 +99,7 @@ void test(){
 
 
 
-pair<long long int, long long int> addInt(){
+pair<float, float> addInt(){
     auto start_time_intAdd = std::chrono::high_resolution_clock::now();
     int_result = int_val1 + int_val2;
     auto end_time_intAdd = std::chrono::high_resolution_clock::now();
@@ -122,7 +122,7 @@ pair<long long int, long long int> addInt(){
     return make_pair(duration_intAdd, duration_intAdd_asm);
 }
 
-pair<long long int, long long int> subInt(){
+pair<float, float> subInt(){
     auto start_time_intSub = std::chrono::high_resolution_clock::now();
     int_result = int_val1 - int_val2;
     auto end_time_intSub = std::chrono::high_resolution_clock::now();
@@ -145,7 +145,7 @@ pair<long long int, long long int> subInt(){
     return make_pair(duration_intSub, duration_intSub_asm);
 }
 
-pair<long long int, long long int> mulInt() {
+pair<float, float> mulInt() {
     auto start_time_intMul = std::chrono::high_resolution_clock::now();
     int_result = int_val1 * int_val2;
     auto end_time_intMul = std::chrono::high_resolution_clock::now();
@@ -168,7 +168,7 @@ pair<long long int, long long int> mulInt() {
     return make_pair(duration_intMul, duration_intMul_asm);
 }
 
-pair<long long int, long long int> divInt() {
+pair<float, float> divInt() {
     auto start_time_intDiv = std::chrono::high_resolution_clock::now();
     int_result = int_val1 / int_val2;
     auto end_time_intDiv = std::chrono::high_resolution_clock::now();
@@ -192,7 +192,7 @@ pair<long long int, long long int> divInt() {
     return make_pair(duration_intDiv, duration_intDiv_asm);
 }
 
-pair<long long int, long long int> addFloat() {
+pair<float, float> addFloat() {
     auto start_time_floatAdd = chrono::high_resolution_clock::now();
     float_result = float_val1 + float_val2;
     auto end_time_floatAdd = chrono::high_resolution_clock::now();
@@ -214,7 +214,7 @@ pair<long long int, long long int> addFloat() {
     return make_pair(duration_floatAdd, duration_floatAdd_asm);
 }
 
-pair<long long int, long long int> subFloat() {
+pair<float, float> subFloat() {
     auto start_time_floatSub = chrono::high_resolution_clock::now();
     float_result = float_val1 - float_val2;
     auto end_time_floatSub = chrono::high_resolution_clock::now();
@@ -237,7 +237,7 @@ pair<long long int, long long int> subFloat() {
     return make_pair(duration_floatSub, duration_floatSub_asm);
 }
 
-pair<long long int, long long int> mulFloat() {
+pair<float, float> mulFloat() {
     auto start_time_floatMul = chrono::high_resolution_clock::now();
     float_result = float_val1 * float_val2;
     auto end_time_floatMul = chrono::high_resolution_clock::now();
@@ -260,7 +260,7 @@ pair<long long int, long long int> mulFloat() {
     return make_pair(duration_floatMul, duration_floatMul_asm);
 }
 
-pair<long long int, long long int> divFloat() {
+pair<float, float> divFloat() {
     auto start_time_floatDiv = chrono::high_resolution_clock::now();
     float_result = float_val1 / float_val2;
     auto end_time_floatDiv = chrono::high_resolution_clock::now();
@@ -282,4 +282,3 @@ pair<long long int, long long int> divFloat() {
     auto duration_floatDiv_asm = chrono::duration_cast<chrono::nanoseconds>(end_time_floatDiv_asm - start_time_floatDiv_asm).count();
     return make_pair(duration_floatDiv, duration_floatDiv_asm);
 }
-
