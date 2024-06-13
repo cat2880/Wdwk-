@@ -1,0 +1,105 @@
+$NOMOD51
+NAME TEST ; ZD537 ASM tutorial
+
+$NOLIST
+$INCLUDE(reg517.inc)
+$LIST
+	
+?STACK 	SEGMENT IDATA ; ?STACK goes into IDATA RAM.
+		RSEG ?STACK ; switch to ?STACK segment.
+		DS 100 ; reserve your stack space
+				; 100 bytes in this example.
+ 		CSEG AT 0 ; absolute Segment at Address 0
+ 		LJMP start ; reset location (jump to start)
+		
+PROG 	SEGMENT CODE
+ 		RSEG PROG
+		USING 0 ; state register_bank used
+ 				; for the following program code. 
+
+Start: 	MOV SP,#?STACK-1 ; assign stack at beginning
+
+		ANL  P6,#(NOT 00010000B); ; Buzzer 1kHz off
+		ANL  P6,#(NOT 00000001B); ; red LED on
+
+        SJMP ?O1
+?O1:
+        ORL P5, #0ffh
+        ;r0 - licznik wierszy
+        ;r1 - licznik kolumny
+        ;r2 - ktora wierszy sprawdzamy
+        ;r3 - ktora kolumne sprawdzamy
+        
+		;reset licznika kolumn
+        mov r0,#0h
+        mov r1,#0h
+reset:
+		;reset licznika wierszy
+        mov r2,#001111111b
+        mov r0,#0h
+
+;petla wierszy
+loop:
+        ;sprawdzamy czy wiersze nie wyszly za skale
+        mov a,r2
+        xrl a,#011110111b
+        add a,#0h			
+
+        ;jesli wyszly zaczynamy sprawdzac od nowa
+		jz reset
+        
+		;ustawienie 0 na odpowiednim wierszu
+        inc r0
+        mov a,r2
+        anl p5,a
+        rr  a
+        mov r2,a
+
+		;reset licznika kolumn
+        mov r3,#011110111b
+        mov r1,#0h
+
+;petla kolumn
+loop2:
+		;sprawdzenie kolumny czy ma na wyjsciu sygnal 0
+        inc r1
+        mov a,p7
+        xrl a,r3
+        add a,#0h
+        
+        jz  key
+        
+        ;sprawdzamy czy to byla ostatnia kolumna
+        mov b,#02h
+        mov a,r3
+        div ab
+        mov a,b
+        add a,#0h
+        
+        jz loop
+
+        ;przesuwamy sprawdzana kolumne 
+        mov a,r3
+        rr a
+        mov r3,a
+
+        jmp loop2
+
+
+;wyswietlenie numeru wiersza i kolumny
+key:
+        mov a,r0
+        rl a
+        rl a
+        rl a
+        rl a
+        add a,r1
+        cpl a
+        mov p1,a
+
+        jmp ?O1
+		
+
+        nop
+        jmp $
+END start
